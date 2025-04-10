@@ -157,7 +157,7 @@ impl<'a, F: SmallField + FromUniformBytes<64>> IOPVerifierPhase1State<'a, F> {
             .zip(alpha_pows.iter())
             .map(|(((point, _), g1_value), &alpha_pow)| {
                 let point_lo_num_vars = point.len() - hi_num_vars;
-                alpha_pow * g1_value * eq_eval(&point[point_lo_num_vars..], &claim2_point)
+                *g1_value * eq_eval(&point[point_lo_num_vars..], &claim2_point)
             })
             .chain(
                 subset_evals
@@ -166,7 +166,7 @@ impl<'a, F: SmallField + FromUniformBytes<64>> IOPVerifierPhase1State<'a, F> {
                     .zip(alpha_pows.iter().skip(next_evals.len()))
                     .map(|(((_, point, _), g1_value), &alpha_pow)| {
                         let point_lo_num_vars = point.len() - hi_num_vars;
-                        alpha_pow * g1_value * eq_eval(&point[point_lo_num_vars..], &claim2_point)
+                        *g1_value * eq_eval(&point[point_lo_num_vars..], &claim2_point)
                     }),
             )
             .collect_vec();
